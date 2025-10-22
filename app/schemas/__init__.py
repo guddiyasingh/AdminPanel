@@ -1,0 +1,81 @@
+from pydantic import BaseModel, EmailStr
+from typing import Optional
+from datetime import date, datetime
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class UserOut(BaseModel):
+    id: int
+    email: EmailStr
+    is_active: bool
+    is_admin: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class RoomBase(BaseModel):
+    number: str
+    type: str
+    capacity: int
+    price_per_night: float
+    is_active: bool = True
+
+class RoomCreate(RoomBase):
+    pass
+
+class RoomOut(RoomBase):
+    id: int
+    class Config:
+        from_attributes = True
+
+class CustomerBase(BaseModel):
+    name: str
+    email: EmailStr
+    phone: Optional[str] = None
+
+class CustomerCreate(CustomerBase):
+    pass
+
+class CustomerOut(CustomerBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+class BookingBase(BaseModel):
+    room_id: int
+    customer_id: int
+    check_in: date
+    check_out: date
+    status: str = "confirmed"
+
+class BookingCreate(BookingBase):
+    pass
+
+class BookingOut(BookingBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+class PaymentCreate(BaseModel):
+    booking_id: int
+    amount: float
+    method: str
+
+class PaymentOut(PaymentCreate):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
