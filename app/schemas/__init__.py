@@ -14,6 +14,16 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
+class UserOut(BaseModel):
+    id: int
+    email: EmailStr
+    is_active: bool
+    is_admin: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
 class RoomBase(BaseModel):
     number: str
     type: str
